@@ -10,6 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool b_ApplyPhysics = false;
 
     [SerializeField] Transform spawnObjectParent;
+
+    public List<GameObject> itemPool = new List<GameObject>();
+
+    public bool isGameOver = false;
+    [SerializeField] TheButton[] buttons;
     private void Awake()
     {
         if (instance == null || instance != this)
@@ -58,6 +63,7 @@ public class GameManager : MonoBehaviour
     {
         if (_currObject != null)
         {
+            UIController.instance.IncreaseBlockUsed();
             _currObject.GetComponent<Rigidbody>().useGravity = true;
             _currObject.transform.parent = spawnObjectParent;
             Items go = _currObject.GetComponent<Items>();
@@ -65,6 +71,7 @@ public class GameManager : MonoBehaviour
             go.bPlaced = true;
             // clean it, making sure that no object is connecting in the bar
             _currObject = null;
+            ShuffleBlocks();
         }
     }
 
@@ -72,5 +79,27 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Has physics: " + _toggle);
         b_ApplyPhysics = _toggle;
+    }
+
+    List<int> usedValues = new List<int>();
+    public int UniqueRandomInt(int min, int max)
+    {
+        int val = Random.Range(min, max);
+        while (usedValues.Contains(val))
+        {
+            val = Random.Range(min, max);
+        }
+        usedValues.Add(val);
+        return val;
+    }
+    public void ShuffleBlocks()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].theItem = itemPool[UniqueRandomInt(0, 6)].GetComponent<Items>();
+            buttons[i].UpdateData();
+        }
+
+        usedValues.Clear();
     }
 }

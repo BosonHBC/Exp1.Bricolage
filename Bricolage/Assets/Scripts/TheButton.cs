@@ -11,13 +11,12 @@ public class TheButton : MonoBehaviour
     void Start()
     {
         title = transform.GetChild(0).GetComponent<Text>();
+        _texture = GetComponent<Image>();
         if (theItem == null)
             Debug.Log("Error! No item in this button");
         else
         {
-            title.text = theItem.Name;
-            _texture = GetComponent<Image>();
-            _texture.sprite = theItem.texture;
+            UpdateData();
         }
 
      }
@@ -32,5 +31,11 @@ public class TheButton : MonoBehaviour
     {
         Debug.Log("Onclick item");
         GameManager.instance.ChangeItems(theItem.gameObject);
+    }
+
+    public void UpdateData()
+    {
+        title.text = theItem.Name;
+        _texture.sprite = theItem.texture;
     }
 }

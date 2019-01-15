@@ -19,7 +19,6 @@ public class ControlManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        theItem = GameManager.instance._currObject.transform;
     }
 
     // Update is called once per frame
@@ -41,7 +40,7 @@ public class ControlManager : MonoBehaviour
 
         // vertical rotation
         float vert = Input.GetAxis("Vertical");
-
+        if(theItem!=null)
         theItem.localEulerAngles += vert * new Vector3(0, 0, 45 * Time.deltaTime);
     }
 
