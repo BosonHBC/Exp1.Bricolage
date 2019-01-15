@@ -13,12 +13,13 @@ public class ControlManager : MonoBehaviour
     }
 
     public Transform theBar;
+    public Transform theItem;
     [Range(1,3.7f)]
     [SerializeField] float range;
     // Start is called before the first frame update
     void Start()
     {
-        
+        theItem = GameManager.instance._currObject.transform;
     }
 
     // Update is called once per frame
@@ -30,10 +31,18 @@ public class ControlManager : MonoBehaviour
             GameManager.instance.PlaceItems();
         }
 
+        // horizontal movement
         float hori = Input.GetAxis("Horizontal");
+        theBar.position += 2*hori* Vector3.right * Time.deltaTime;
+        if (theBar.localPosition.x < -range)
+            theBar.localPosition = new Vector3(-range, theBar.localPosition.y, theBar.localPosition.z);
+        if (theBar.localPosition.x > range)
+            theBar.localPosition = new Vector3(range, theBar.localPosition.y, theBar.localPosition.z);
 
-        theBar.position += hori* Vector3.right * Time.deltaTime;
-        
+        // vertical rotation
+        float vert = Input.GetAxis("Vertical");
+
+        theItem.localEulerAngles += vert * new Vector3(0, 0, 45 * Time.deltaTime);
     }
 
 }

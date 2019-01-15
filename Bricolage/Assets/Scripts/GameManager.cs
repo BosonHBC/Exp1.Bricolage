@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [SerializeField] Transform generatePoint;
-    [SerializeField] GameObject _currObject;
+    public GameObject _currObject;
     [SerializeField] bool b_ApplyPhysics = false;
 
     [SerializeField] Transform spawnObjectParent;
@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
             _currObject.GetComponent<Rigidbody>().useGravity = false;
         }
 
+        ControlManager.instance.theItem = _currObject.transform;
     }
 
     public void PlaceItems()
